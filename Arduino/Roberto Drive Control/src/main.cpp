@@ -24,8 +24,9 @@
 #define WHEEL_RR 3    // Rear Right
 
 // Function Declarations
-void stopAll();
 void readSerialInput();
+void drive();
+void stopAll();
 void stopWheel(byte);
 void spinWheel(byte, bool, byte);
 void setSpeed(byte);
@@ -43,7 +44,7 @@ byte steerVal = 10;   // The amount of skid/tank steering to apply to the forwar
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Init Pin...");
+  Serial.println("Init Pins...");
 
   pinMode(PIN_FL_PWM, OUTPUT);
   pinMode(PIN_FL_FWD, OUTPUT);
@@ -57,10 +58,19 @@ void setup() {
   pinMode(PIN_RR_PWM, OUTPUT);
   pinMode(PIN_RR_FWD, OUTPUT);
   pinMode(PIN_RR_REV, OUTPUT);
+
+  Serial.println("Roberto Drive Control Ready.");
+  Serial.println(" W = Forward");
+  Serial.println(" S = Reverse");
+  Serial.println(" A = Strafe Left");
+  Serial.println(" D = Strafe Right");
+  Serial.println(" Q = Steer Left");
+  Serial.println(" E = Steer Right");
 }
 
 void loop() {
   readSerialInput();
+  drive();
   // // Front Left
   // spinWheel(FL, 1, 128);
   // delay(1000);
@@ -195,9 +205,41 @@ void readSerialInput() {
     byte incomingByte = Serial.read();
   
     switch (incomingByte) {
+      // Forward
       case 'w':
       case 'W':
         setSpeed(speedVal+1);
+        break;
+
+      // Reverse
+      case 's':
+      case 'S':
+        setSpeed(speedVal-1);
+        break;
+
+      // Strafe Right
+      case 'd':
+      case 'D':
+        setStrafe(strafeVal+1);
+        break;
+
+      // Strafe Left
+      case 'a':
+      case 'A':
+        setStrafe(strafeVal-1);
+        break;
+
+      // Steer Right
+      case 'e':
+      case 'E':
+        setSteer(steerVal+1);
+        break;
+
+      // Steer Left
+      case 'q':
+      case 'Q':
+        setSteer(steerVal-1);
+        break;
     }
   }
 };
