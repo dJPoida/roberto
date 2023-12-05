@@ -128,7 +128,6 @@ void loop() {
   // // Stop
   // stopAll();
   // delay(2000);
-
 }
 
 /**
@@ -194,6 +193,13 @@ void setSteer(byte val) {
     Serial.println(steerVal);
   }
 };
+
+/**
+ * Evaluate the input states and apply the values to the wheels
+ */
+void drive() {
+
+}
 
 /**
  * Read the Serial input buffer
