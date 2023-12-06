@@ -17,3 +17,83 @@ A cobbled together robot for working with my daughters on STEM related projects.
     - Motors: [Standard plastic gear motors](https://www.aliexpress.com/item/1005002849087125.html)
 
 # Installation
+
+## ROS2 on the Development PC
+TODO: Document how to install ROS2 on the workstation
+
+## ROS2 (via Docker) on the Raspberri Pi 4
+  ### Setup the Raspberry Pi
+  - Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to install **Raspberry Pi OS (64Bit)** to the SD Card
+    - Change the hostname to `roberto`.local
+    - Change the username and password (i.e. `roberto` / `your_password`)
+    - Configure the WiFi credentials for your local network (and WiFi region)
+  - Insert the SD Card into the Raspberry Pi (and optionally plug in a keyboard, mouse and monitor) and power it on
+  - Either open a terminal on the Pi or connect remotely to it via SSH `ssh roberto@roberto.local`
+    - To enable SSH use the keyboard / mouse and screen to access the [raspi-config](https://www.raspberrypi.com/documentation/computers/configuration.html) tool
+  - Update the operating system packages
+    ```
+    sudo apt update
+    sudo apt upgrade
+    ```
+  
+  ### Install Docker
+  - Install Docker & Docker Compose
+    ```
+    cd ~
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    chmod +x get-docker.sh 
+    ./get-docker.sh
+    sudo usermod -aG docker roberto
+    sudo systemctl unmask docker
+    sudo chmod 666 /var/run/docker.sock
+    sudo apt install docker-compose
+    sudo systemctl start docker
+    ```
+  - Restart
+    `sudo shutdown -r now`
+  - Clone this repo
+    ```
+    cd ~
+    git clone https://github.com/dJPoida/roberto.git roberto
+    // or
+    git clone git@github.com:dJPoida/roberto.git roberto
+    ```
+  - Build the container
+    ```
+    cd ~/roberto/docker
+    docker build -t ros2 .
+    ```
+  - Run the container
+    docker-compose up -d
+  
+  ### Setup VS Code on the Development PC to perform remote work on the Raspberry Pi
+  We can use VS Code from the Development PC to work directly on the Pi. This has many advantages including making live changes to the code on the robot.
+  - Open Visual Studio Code and install the following extensions
+    - [Remote Development](vscode:extension/ms-vscode-remote.vscode-remote-extensionpack)
+    - [Docker](vscode:extension/ms-azuretools.vscode-docker)
+    - [Docker Explorer](vscode:extension/formulahendry.docker-explorer)
+  - Once installed (restart VSCode if required), open a new window and connect to the Raspberry Pi
+    - `CTRL+SHIFT+P`
+    - `Remote-SSH: Connect to Host...`
+    - Enter `roberto@roberto.local`
+    - Enter the password specified when [setting up the Raspberry Pi](#setup-the-raspberry-pi)
+    - Wait for VS Code to install the remote VS Code services on the Raspberry Pi
+  - Install the following extensions on the Raspberry Pi (click "Install in SSH: roberto.local")
+    - [Docker](vscode:extension/ms-azuretools.vscode-docker)
+    - [Docker Explorer](vscode:extension/formulahendry.docker-explorer)
+    - [C/C++](vscode:extension/ms-vscode.cpptools)
+    - [PlatformIO IDE](vscode:extension/platformio.platformio-ide)
+
+# Tips and Tricks
+## Console Commands for checking the status of the Raspbery Pi
+- `top`: List the running processes for diagnosing CPU and Memory Utilisation
+- `pinout`: Display the current Pi hardware
+- `uname -m`: Output what architecture (32 or 64 bit etc...)
+- `docker ps`: Get the status of the docker containers running
+- `docker exec -it docker_ros2_1 bash`: Run a bash terminal inside the docker container
+- `ip a`: List the network interfaces for determining the IP Address of the Pi
+
+# References, Links and Shout-outs
+- Official ROS guide to [Installing ROS2 on Windows](https://docs.ros.org/en/crystal/Installation/Windows-Install-Binary.html)
+- When getting started on ROS2 on the Raspberry Pi I followed this excellent [Learn ROS with me](https://www.kevsrobots.com/learn/learn_ros/) guide from [Kev's Robots](https://www.kevsrobots.com/)
+  
