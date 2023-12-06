@@ -77,6 +77,7 @@ TODO: Document how to install ROS2 on the workstation
     - `Remote-SSH: Connect to Host...`
     - Enter `roberto@roberto.local`
     - Enter the password specified when [setting up the Raspberry Pi](#setup-the-raspberry-pi)
+    - If prompted for which configuration file to use, select `~/.ssh/config`
     - Wait for VS Code to install the remote VS Code services on the Raspberry Pi
   - Install the following extensions on the Raspberry Pi (click "Install in SSH: roberto.local")
     - [Docker](vscode:extension/ms-azuretools.vscode-docker)
@@ -92,6 +93,34 @@ TODO: Document how to install ROS2 on the workstation
 - `docker ps`: Get the status of the docker containers running
 - `docker exec -it docker_ros2_1 bash`: Run a bash terminal inside the docker container
 - `ip a`: List the network interfaces for determining the IP Address of the Pi
+
+## Reducing Re-authentication on the Raspberry Pi
+Every time you connect to the Pi via SSH it will request the password. You can circumvent this by creating an SSH key on the development PC, specifying it as the authentication method and adding it to the trusted connections on the Pi.
+1. Create an SSH Key on the Development PC
+    - In a terminal on the Development PC run
+      ```
+      ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+      ```
+    - follow the prompts and if this hasn't been done before, save to the default location `~/.ssh/id_rsa`
+2. Add the public key to the Raspberry Pi authorized keys
+    - Open the `~/.ssh/id_rsa.pub` public key file in a text editor on the Development PC 
+    - Copy the contents to clipboard
+    - Open an SSH terminal to the Raspberry Pi and run the following command with the pasted contents of the public key
+      ```
+      echo "__PASTE_KEY_HERE__" >> ~/.ssh/authorized_keys
+      ```
+3. Update the ssh configuration on the development machine to always use this key when connecting to the Raspberry Pi
+    - Open the file `~/.ssh/config`
+    - Change the section `roberto.local` to read
+      ```
+      Host roberto.local
+        HostName roberto.local
+        User roberto
+        Port 22
+        PreferredAuthentications publickey
+        IdentityFile "~/.ssh/id_rsa"
+      ```
+4. Connect to the Raspberry Pi via SSH. It should no longer request a password.
 
 # References, Links and Shout-outs
 - Official ROS guide to [Installing ROS2 on Windows](https://docs.ros.org/en/crystal/Installation/Windows-Install-Binary.html)
