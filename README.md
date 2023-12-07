@@ -84,6 +84,7 @@ TODO: Document how to install ROS2 on the workstation
     - [Docker Explorer](vscode:extension/formulahendry.docker-explorer)
     - [C/C++](vscode:extension/ms-vscode.cpptools)
     - [PlatformIO IDE](vscode:extension/platformio.platformio-ide)
+    - [Python](vscode:extension/ms-python.python)
 
 # Tips and Tricks
 ## Console Commands for checking the status of the Raspbery Pi
