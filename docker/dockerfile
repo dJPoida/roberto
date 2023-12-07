@@ -10,7 +10,11 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     python3-colcon-mixin \
     python3-rosdep \
     python3-vcstool \
+    pip \
     && rm -rf /var/lib/apt/lists/*
+
+# downgrade PIP
+RUN pip install setuptools==58.2.0
 
 # bootstrap rosdep
 RUN rosdep init && \
@@ -28,3 +32,7 @@ RUN colcon mixin add default \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-ros-base=0.10.0-1* \
     && rm -rf /var/lib/apt/lists/*
+
+# Setup scripts
+RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
+RUN echo "source /ros2/roberto/install/setup.bash" >> /root/.bashrc

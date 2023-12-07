@@ -89,6 +89,7 @@ TODO: Document how to install ROS2 on the workstation
     - [C/C++](vscode:extension/ms-vscode.cpptools)
     - [PlatformIO IDE](vscode:extension/platformio.platformio-ide)
     - [Python](vscode:extension/ms-python.python)
+    - [ROS](vscode:extension/ms-iot.vscode-ros)
 
 # Tips and Tricks
 ## Console Commands for checking the status of the Raspbery Pi

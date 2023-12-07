@@ -11,7 +11,8 @@
 			"ms-azuretools.vscode-docker",
 			"formulahendry.docker-explorer",
 			"ms-python.vscode-pylance",
-			"ms-python.python"
+			"ms-python.python",
+			"ms-iot.vscode-ros"
 		]
 	}
 }
