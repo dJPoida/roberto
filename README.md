@@ -35,6 +35,10 @@ TODO: Document how to install ROS2 on the workstation
     sudo apt update
     sudo apt upgrade
     ```
+  - Enable I2C
+    - Run the Raspberry Pi Configuration tool `sudo raspi-config`
+    - Enable `Interface Options` -> `I2C`
+    - `<Finish>`
   
   ### Install Docker
   - Install Docker & Docker Compose
