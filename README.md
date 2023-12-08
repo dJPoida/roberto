@@ -38,7 +38,7 @@ TODO: Document how to install ROS2 on the workstation
   - Install required packages
     ```
     sudo apt update
-    sudo apt install -y python3-gpiozero python3-smbus raspi-config 
+    sudo apt install -y python3-gpiozero python3-smbus python3-venv raspi-config 
     ```
   - Access the [raspi-config](https://www.raspberrypi.com/documentation/computers/configuration.html) tool
     ```
