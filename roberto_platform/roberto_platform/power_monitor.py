@@ -12,7 +12,7 @@
 '''
 import sys
 import time
-sys.path.append("../..")
+# sys.path.append("../..")
 from DFRobot_INA219 import INA219
 
 ina219_reading_mA = 1000

@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>roberto</name>
+  <name>roberto_platform</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Nodes and Services to be run on the Roberto platform</description>
   <maintainer email="djpoida@gmail.com">dJPoida</maintainer>
   <license>MIT</license>
 
   <depend>rclpy</depend>
   <depend>std_msgs</depend>
+  <depend>smbus</depend>
+  <depend>time</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

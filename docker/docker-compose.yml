@@ -3,8 +3,8 @@ services:
   ros2:
     build: .
     # restart: no
-    ports:
-      - "3332:3332"
+    # ports:
+    #   - "3332:3332"
     volumes:
       - /home/roberto/ros:/home/ros
       - /home/roberto/roberto:/ros2
@@ -13,4 +13,3 @@ services:
     tty: true
     # Setting network mode to "host" to ensure we are on the same LAN as the Raspberry Pi
     network_mode: "host"
-    

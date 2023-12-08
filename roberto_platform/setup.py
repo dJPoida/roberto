@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'roberto'
+package_name = 'roberto_platform'
 
 setup(
     name=package_name,
@@ -15,13 +15,13 @@ setup(
     zip_safe=True,
     maintainer='dJPoida',
     maintainer_email='djpoida@gmail.com',
-    description='TODO: Package description',
+    description='Nodes and Services to be run on the Roberto platform',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts' : [
-            'pub = roberto.pub:main',
-            'sub = roberto.sub:main',
+            'pub = roberto_platform.pub:main',
+            'sub = roberto_platform.sub:main',
         ],
     },
 )
