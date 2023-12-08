@@ -73,6 +73,11 @@ TODO: Document how to install ROS2 on the workstation
     ```
   ### Install the Roberto code
   - (Optional) [Add an SSH key to GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) to make pushing code changes easier
+  - (Optional) Set your git credentials
+    ```
+    git config --global user.email "you@example.com"
+    git config --global user.name "Your Name"
+    ```
   - Clone this repository
     ```
     cd ~
