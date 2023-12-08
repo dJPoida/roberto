@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 services:
   ros2:
     build: .
@@ -8,6 +8,9 @@ services:
     volumes:
       - /home/roberto/ros:/home/ros
       - /home/roberto/roberto:/ros2
-    # devices:
-      # - /dev/ttyUSB0:/dev/ttyUSB0
+    devices:
+      - /dev/i2c-1:/dev/i2c-1
     tty: true
+    # Setting network mode to "host" to ensure we are on the same LAN as the Raspberry Pi
+    network_mode: "host"
+    
