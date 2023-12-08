@@ -21,61 +21,82 @@ A cobbled together robot for working with my daughters on STEM related projects.
 ## ROS2 on the Development PC
 TODO: Document how to install ROS2 on the workstation
 
-## ROS2 (via Docker) on the Raspberri Pi 4
+## ROS2 on the Raspberry Pi 4
   ### Setup the Raspberry Pi
-  - Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to install **Raspberry Pi OS (64Bit)** to the SD Card
+  - Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to install **Ubuntu Server 22.04.3 LTS (64Bit)** (Jammy Jellyfish) to the SD Card
     - Change the hostname to `roberto`.local
     - Change the username and password (i.e. `roberto` / `your_password`)
     - Configure the WiFi credentials for your local network (and WiFi region)
+    - Enable SSH (under the services tab)
   - Insert the SD Card into the Raspberry Pi (and optionally plug in a keyboard, mouse and monitor) and power it on
   - Either open a terminal on the Pi or connect remotely to it via SSH `ssh roberto@roberto.local`
-    - To enable SSH use the keyboard / mouse and screen to access the [raspi-config](https://www.raspberrypi.com/documentation/computers/configuration.html) tool
   - Update the operating system packages
     ```
     sudo apt update
     sudo apt upgrade
     ```
-  - Enable I2C
-    - Run the Raspberry Pi Configuration tool `sudo raspi-config`
-    - Enable `Interface Options` -> `I2C`
-    - `<Finish>`
-  
-  ### Install Docker
-  - Install Docker & Docker Compose
+  - Install required packages
     ```
-    cd ~
-    curl -fsSL https://get.docker.com -o get-docker.sh
-    chmod +x get-docker.sh 
-    ./get-docker.sh
-    sudo usermod -aG docker roberto
-    sudo systemctl unmask docker
-    sudo chmod 666 /var/run/docker.sock
-    sudo apt install docker-compose
-    sudo systemctl start docker
+    sudo apt update
+    sudo apt install -y python3-gpiozero python3-smbus raspi-config 
     ```
-  - Restart
-    `sudo shutdown -r now`
-  - Clone this repo
+  - Access the [raspi-config](https://www.raspberrypi.com/documentation/computers/configuration.html) tool
+    ```
+    sudo raspi-config
+    ```
+    Configure the following:
+    - 3: Interface Options
+      - I2 SSH - Enable SSH (if not already enabled during SSD writing)
+      - I5 I2C - Enable I2C Communication
+    - 4: Performance Options
+      - P4 Fan - Enable Cooling Fan (if connected)
+    - 6: Advanced Options
+      - A1 Expand Filesystem
+
+  ### Install ROS2
+  Install [ROS2 Humble Hawksbill](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html)
+  - Setup the Ubuntu Universe Repository
+    ```
+    sudo apt install software-properties-common
+    sudo add-apt-repository universe
+    ```
+  - Add the ROS package source
+    ```
+    sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo "jammy") main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+    ```
+  - Install the ROS packages
+    ```
+    sudo apt update
+    sudo apt upgrade
+    sudo apt install -y ros-humble-desktop ros-dev-tools
+    ```
+  ### Install the Roberto code
+  - (Optional) [Add an SSH key to GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) to make pushing code changes easier
+  - Clone this repository
     ```
     cd ~
     git clone https://github.com/dJPoida/roberto.git roberto
     // or
     git clone git@github.com:dJPoida/roberto.git roberto
     ```
-  - Build the container
+  - Build the Roberto packages
     ```
-    cd ~/roberto/docker
-    docker build -t ros2 .
+    source /opt/ros/$ROS_DISTRO/setup.bash
+    cd ~/roberto/roberto_platform
+    colcon build
     ```
-  - Run the container
-    docker-compose up -d
-  
+  - Add the setup scripts to .bashrc to speed up opening new shells
+    ```
+    echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/roberto/.bashrc
+    echo "source /home/roberto/roberto/roberto_platform/install/setup.bash" >> /home/roberto/.bashrc
+    ```
+  - Reboot `sudo shutdown -r now`
+
   ### Setup VS Code on the Development PC to perform remote work on the Raspberry Pi
   We can use VS Code from the Development PC to work directly on the Pi. This has many advantages including making live changes to the code on the robot.
   - Open Visual Studio Code and install the following extensions
     - [Remote Development](vscode:extension/ms-vscode-remote.vscode-remote-extensionpack)
-    - [Docker](vscode:extension/ms-azuretools.vscode-docker)
-    - [Docker Explorer](vscode:extension/formulahendry.docker-explorer)
   - Once installed (restart VSCode if required), open a new window and connect to the Raspberry Pi
     - `CTRL+SHIFT+P`
     - `Remote-SSH: Connect to Host...`
@@ -84,8 +105,6 @@ TODO: Document how to install ROS2 on the workstation
     - If prompted for which configuration file to use, select `~/.ssh/config`
     - Wait for VS Code to install the remote VS Code services on the Raspberry Pi
   - Install the following extensions on the Raspberry Pi (click "Install in SSH: roberto.local")
-    - [Docker](vscode:extension/ms-azuretools.vscode-docker)
-    - [Docker Explorer](vscode:extension/formulahendry.docker-explorer)
     - [C/C++](vscode:extension/ms-vscode.cpptools)
     - [PlatformIO IDE](vscode:extension/platformio.platformio-ide)
     - [Python](vscode:extension/ms-python.python)
@@ -96,8 +115,6 @@ TODO: Document how to install ROS2 on the workstation
 - `top`: List the running processes for diagnosing CPU and Memory Utilisation
 - `pinout`: Display the current Pi hardware
 - `uname -m`: Output what architecture (32 or 64 bit etc...)
-- `docker ps`: Get the status of the docker containers running
-- `docker exec -it docker_ros2_1 bash`: Run a bash terminal inside the docker container
 - `ip a`: List the network interfaces for determining the IP Address of the Pi
 
 ## Reducing Re-authentication on the Raspberry Pi
@@ -130,5 +147,6 @@ Every time you connect to the Pi via SSH it will request the password. You can c
 
 # References, Links and Shout-outs
 - Official ROS guide to [Installing ROS2 on Windows](https://docs.ros.org/en/crystal/Installation/Windows-Install-Binary.html)
+- Official ROS guide to [Installing ROS2 on Ubuntu](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html)
 - When getting started on ROS2 on the Raspberry Pi I followed this excellent [Learn ROS with me](https://www.kevsrobots.com/learn/learn_ros/) guide from [Kev's Robots](https://www.kevsrobots.com/)
   
