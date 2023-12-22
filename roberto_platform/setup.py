@@ -1,6 +1,7 @@
 from setuptools import find_packages, setup
 
 package_name = 'roberto_platform'
+submodules = "roberto_platform/submodules"
 
 setup(
     name=package_name,
@@ -22,6 +23,7 @@ setup(
         'console_scripts' : [
             'pub = roberto_platform.pub:main',
             'sub = roberto_platform.sub:main',
+            'power_monitor = roberto_platform.power_monitor:main',
         ],
     },
 )

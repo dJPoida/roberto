@@ -8,8 +8,6 @@
 		"recommendations": [
 			"platformio.platformio-ide",
 			"ms-vscode.cpptools",
-			"ms-azuretools.vscode-docker",
-			"formulahendry.docker-explorer",
 			"ms-python.vscode-pylance",
 			"ms-python.python",
 			"ms-iot.vscode-ros"
