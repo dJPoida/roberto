@@ -89,6 +89,10 @@ TODO: Document how to install ROS2 on the workstation
     // or
     git clone git@github.com:dJPoida/roberto.git roberto
     ```
+  - Install the [PlatformIO board rules](https://docs.platformio.org/en/latest/core/installation/udev-rules.html#platformio-udev-rules)
+    ```
+    curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules | sudo tee /etc/udev/rules.d/99-platformio-udev.rules
+    ```
   - Build the Roberto packages
     ```
     source /opt/ros/$ROS_DISTRO/setup.bash

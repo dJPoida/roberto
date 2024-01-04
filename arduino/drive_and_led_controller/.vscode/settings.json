@@ -6,5 +6,15 @@
     "Eldred",
     "NEOPIXEL",
     "TCCR"
+  ],
+  "python.autoComplete.extraPaths": [
+    "/home/roberto/roberto/install/roberto_controller/lib/python3.10/site-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages"
+  ],
+  "python.analysis.extraPaths": [
+    "/home/roberto/roberto/install/roberto_controller/lib/python3.10/site-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages"
   ]
 }
