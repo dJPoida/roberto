@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rclpy
 import time
 from rclpy.node import Node
@@ -15,7 +17,7 @@ battery_voltage_min = 10.8
 class PowerMonitor(Node):
 
     def __init__(self):
-        super().__init__("roberto_power_monitor")
+        super().__init__("power_monitor")
         self.init_INA219()
         self._battery_voltage = 0
         self._battery_percent = 0
@@ -24,7 +26,7 @@ class PowerMonitor(Node):
         self.publisher_battery_percent = self.create_publisher(Float32, "power/battery_percent", 10)
         self.publisher_current_draw_ma = self.create_publisher(Float32, "power/current_draw_ma", 10)
         self._publish_timer = self.create_timer(0.5, self.publish_messages)
-        self.get_logger().info("Power Monitor Initialised")
+        self.get_logger().info("Power Monitor Node Initialised")
 
     def init_INA219(self):
         # TODO: allow parameterisation of the I2C Address

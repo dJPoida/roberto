@@ -14,6 +14,16 @@
 		]
 	},
 	"settings": {
-		"ros.distro": "humble"
+		"ros.distro": "humble",
+		"python.analysis.extraPaths": [
+			"/home/roberto/roberto/install/roberto_controller/lib/python3.10/site-packages",
+			"/opt/ros/humble/lib/python3.10/site-packages",
+			"/opt/ros/humble/local/lib/python3.10/dist-packages"
+		],
+		"python.autoComplete.extraPaths": [
+			"/home/roberto/roberto/install/roberto_controller/lib/python3.10/site-packages",
+			"/opt/ros/humble/lib/python3.10/site-packages",
+			"/opt/ros/humble/local/lib/python3.10/dist-packages"
+		]
 	}
 }

@@ -154,8 +154,12 @@ Every time you connect to the Pi via SSH it will request the password. You can c
       ```
 4. Connect to the Raspberry Pi via SSH. It should no longer request a password.
 
+# ROS2 Handy commands
+- `rqt_graph` opens up Ros2 Graph
+- `colcon build --symlink-install` will ensure a python package doesn't need to be re-built with every change
+
 # References, Links and Shout-outs
 - Official ROS guide to [Installing ROS2 on Windows](https://docs.ros.org/en/crystal/Installation/Windows-Install-Binary.html)
 - Official ROS guide to [Installing ROS2 on Ubuntu](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html)
-- When getting started on ROS2 on the Raspberry Pi I followed this excellent [Learn ROS with me](https://www.kevsrobots.com/learn/learn_ros/) guide from [Kev's Robots](https://www.kevsrobots.com/)
-  
+- [Learn ROS with me](https://www.kevsrobots.com/learn/learn_ros/) guide from [Kev's Robots](https://www.kevsrobots.com/)
+- [Ros2 Tutorials - ROS2 Humble For Beginners](https://www.youtube.com/playlist?list=PLLSegLrePWgJudpPUof4-nVFHGkB62Izy)
