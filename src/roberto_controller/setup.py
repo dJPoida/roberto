@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
-package_name = 'roberto_platform'
-submodules = "roberto_platform/submodules"
+package_name = 'roberto_controller'
+submodules = "roberto_controller/submodules"
 
 setup(
     name=package_name,
@@ -16,14 +16,14 @@ setup(
     zip_safe=True,
     maintainer='dJPoida',
     maintainer_email='djpoida@gmail.com',
-    description='Nodes and Services to be run on the Roberto platform',
+    description='Nodes and Services to be run the Roberto robot',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts' : [
-            'pub = roberto_platform.pub:main',
-            'sub = roberto_platform.sub:main',
-            'power_monitor = roberto_platform.power_monitor:main',
+            'pub = roberto_controller.pub:main',
+            'sub = roberto_controller.sub:main',
+            'power_monitor = roberto_controller.power_monitor:main',
         ],
     },
 )

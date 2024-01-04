@@ -12,5 +12,8 @@
 			"ms-python.python",
 			"ms-iot.vscode-ros"
 		]
+	},
+	"settings": {
+		"ros.distro": "humble"
 	}
 }
