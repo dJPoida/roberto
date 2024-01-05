@@ -28,7 +28,6 @@ bool initI2CComms(void (*_hostConnectionChangedEventHandler)(bool)) {
   
   // Call receiveEvent when data received                
   Wire.onReceive(handleReceive);
-  Wire.onRequest(sendHeartbeat);
   hostConnectionChangedEventHandler = _hostConnectionChangedEventHandler;
 
   #ifdef SERIAL_DEBUG
@@ -55,14 +54,6 @@ void handleReceive(int bytecount) {
       handleBatteryLevelReceived(newBatteryLevel);
       break;
   }
-}
-
-/**
- * Method to be called when the host requests data (only used for heartbeat)
- */
-void sendHeartbeat() {
-  // TODO: implement this on the host
-  Wire.write(I2C_MSG_HEARTBEAT);
 }
 
 /**

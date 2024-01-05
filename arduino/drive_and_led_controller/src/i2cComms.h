@@ -12,7 +12,6 @@
 
 bool initI2CComms(void (*hostConnectionChangedEventHandler)(bool));
 void handleReceive(int bytecount);
-void sendHeartbeat();
 void handleHeartbeatReceived();
 void handleBatteryLevelReceived(byte newBatteryLevel);
 bool checkConnectionToHost(unsigned long currentMillis);
