@@ -102,7 +102,7 @@ TODO: Document how to install ROS2 on the workstation
   - Add the setup scripts to .bashrc to speed up opening new shells
     ```
     echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/roberto/.bashrc
-    echo "source /home/roberto/roberto/roberto_platform/install/setup.bash" >> /home/roberto/.bashrc
+    echo "source /home/roberto/roberto/install/setup.bash" >> /home/roberto/.bashrc
     ```
   - Reboot `sudo shutdown -r now`
 

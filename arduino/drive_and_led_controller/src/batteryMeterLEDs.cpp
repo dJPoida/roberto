@@ -26,7 +26,7 @@ bool BatteryMeterLEDs::init() {
   #endif
 
   // Set the initial state
-  mode = BLM_UNKNOWN;
+  level = BL_UNKNOWN;
   flashStateOn = true;
   lastCurrentMillis = millis();
   
@@ -44,14 +44,44 @@ bool BatteryMeterLEDs::init() {
 
 
 /**
- * Set the mode of the LED strip
+ * Set the level of the LED strip
  */
-void BatteryMeterLEDs::setMode(BatteryLEDsMode newMode) {
-  if (newMode != mode) {
-    mode = newMode;
+void BatteryMeterLEDs::setLevel(BatteryLevel newLevel) {
+  if (newLevel != level) {
+    level = newLevel;
     lastCurrentMillis = millis();
     updateLEDs();
   }
+}
+
+
+/**
+ * Set the mode of the LED strip
+ */
+void BatteryMeterLEDs::setLevelFromBatteryPercent(byte batteryPercent) {
+  BatteryLevel newLevel = level;
+
+  // greater than 100 is basically unknown because the real value should be between 0 and 100
+  if (batteryPercent > 100) {
+    newLevel = BL_UNKNOWN;
+  }
+  else if (batteryPercent > BATTERY_LEVEL_FULL) {
+    newLevel = BL_FULL;
+  }
+  else if (batteryPercent > BATTERY_LEVEL_HIGH) {
+    newLevel = BL_HIGH;
+  }
+  else if (batteryPercent > BATTERY_LEVEL_MED) {
+    newLevel = BL_MEDIUM;
+  }
+  else if (batteryPercent > BATTERY_LEVEL_LOW) {
+    newLevel = BL_LOW;
+  }
+  else if (batteryPercent >= 0) {
+    newLevel = BL_DANGER;
+  }
+
+  setLevel(newLevel);
 }
 
 
@@ -60,14 +90,14 @@ void BatteryMeterLEDs::setMode(BatteryLEDsMode newMode) {
  * A cycle duration is defined in the config.h
  */
 void BatteryMeterLEDs::run(unsigned long currentMillis) {
-    switch (mode) {
-      case BLM_UNKNOWN:
-      case BLM_DANGER:
+    switch (level) {
+      case BL_UNKNOWN:
+      case BL_DANGER:
         if ((currentMillis - lastCurrentMillis) > BATTERY_METER_LEDS_FLASH_DURATION) {
           flashStateOn = !flashStateOn;
           updateLEDs();
 
-          // Store the current millis for the next cycle
+          // Store the current millis for the next flash state
           lastCurrentMillis = currentMillis;
         }
         break;
@@ -78,36 +108,36 @@ void BatteryMeterLEDs::run(unsigned long currentMillis) {
 
 
 /**
- * Update the state of the LEDs based on the current mode
+ * Update the state of the LEDs based on the current level
  */
 void BatteryMeterLEDs::updateLEDs() {
-  switch (mode) {
-    case BLM_UNKNOWN:
-      battery_meter_leds[0] = flashStateOn ? CRGB::Orange : CRGB:: Black;
-      battery_meter_leds[1] = flashStateOn ? CRGB::Orange : CRGB:: Black;
-      battery_meter_leds[2] = flashStateOn ? CRGB::Orange : CRGB:: Black;
+  switch (level) {
+    case BL_UNKNOWN:
+      battery_meter_leds[0] = flashStateOn ? CRGB::Yellow : CRGB:: Black;
+      battery_meter_leds[1] = flashStateOn ? CRGB::Yellow : CRGB:: Black;
+      battery_meter_leds[2] = flashStateOn ? CRGB::Yellow : CRGB:: Black;
       break;
-    case BLM_FULL:
+    case BL_FULL:
       battery_meter_leds[0] = CRGB::Green;
       battery_meter_leds[1] = CRGB::Green;
       battery_meter_leds[2] = CRGB::Green;
       break;          
-    case BLM_HIGH:
+    case BL_HIGH:
       battery_meter_leds[0] = CRGB::Green;
       battery_meter_leds[1] = CRGB::Green;
       battery_meter_leds[2] = CRGB::Black;
       break;          
-    case BLM_MEDIUM:
+    case BL_MEDIUM:
       battery_meter_leds[0] = CRGB::Orange;
       battery_meter_leds[1] = CRGB::Orange;
       battery_meter_leds[2] = CRGB::Black;
       break;          
-    case BLM_LOW:
+    case BL_LOW:
       battery_meter_leds[0] = CRGB::Red;
       battery_meter_leds[1] = CRGB::Black;
       battery_meter_leds[2] = CRGB::Black;
       break;          
-    case BLM_DANGER:
+    case BL_DANGER:
       battery_meter_leds[0] = flashStateOn ? CRGB::Red : CRGB:: Black;
       battery_meter_leds[1] = flashStateOn ? CRGB::Red : CRGB:: Black;
       battery_meter_leds[2] = flashStateOn ? CRGB::Red : CRGB:: Black;
@@ -118,30 +148,3 @@ void BatteryMeterLEDs::updateLEDs() {
 
   FastLED.show();
 }
-
-/**
- * Evaluate the current mode and apply the current cycle number
- */
-// void BatteryMeterLEDs::_applyCycle() {
-  // bool newState = _state;
-  // if (_cycleNo >= 0) {
-  //   switch (_mode) {
-  //     case LED_FLASH:
-  //       newState = flash_values[_cycleNo];
-  //       break;
-  //     case LED_FLASH_FAST:
-  //       newState = flash_fast_values[_cycleNo];
-  //       break;
-  //     case LED_FLASH_REGISTER:
-  //       newState = flash_register_values[_cycleNo];
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
-
-  // if (newState != _state) {
-  //   _state = newState;
-  //   digitalWrite(_gpioNo, _state);
-  // }
-// }

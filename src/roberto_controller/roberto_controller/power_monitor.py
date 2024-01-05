@@ -13,6 +13,7 @@ ina219_reading_mA = 1000
 ext_meter_reading_mA = 1000
 battery_voltage_max = 12.6
 battery_voltage_min = 10.8
+UPDATE_INTERVAL = 2 # Update the battery level every 2 seconds
 
 class PowerMonitor(Node):
 
@@ -25,7 +26,7 @@ class PowerMonitor(Node):
         self.publisher_battery_voltage = self.create_publisher(Float32, "power/battery_voltage", 10)
         self.publisher_battery_percent = self.create_publisher(Float32, "power/battery_percent", 10)
         self.publisher_current_draw_ma = self.create_publisher(Float32, "power/current_draw_ma", 10)
-        self._publish_timer = self.create_timer(0.5, self.publish_messages)
+        self._publish_timer = self.create_timer(UPDATE_INTERVAL, self.publish_messages)
         self.get_logger().info("Power Monitor Node Initialised")
 
     def init_INA219(self):

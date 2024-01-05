@@ -24,6 +24,7 @@ setup(
             'pub = roberto_controller.pub:main',
             'sub = roberto_controller.sub:main',
             'power_monitor = roberto_controller.power_monitor:main',
+            'i2c_host = roberto_controller.i2c_host:main',
         ],
     },
 )

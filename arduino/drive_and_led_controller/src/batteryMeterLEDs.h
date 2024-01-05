@@ -18,13 +18,14 @@ class BatteryMeterLEDs {
     bool init();
 
     void run(unsigned long currentMillis);
-    void setMode(BatteryLEDsMode newMode);
+    void setLevel(BatteryLevel newMode);
+    void setLevelFromBatteryPercent(byte newBatteryLevel);
 
   private:
     CRGB battery_meter_leds[BATTERY_METER_LEDS_COUNT];  // LED array
     bool flashStateOn;                                  // For flashing modes, whether the LEDs are "ON" or "OFF"
     unsigned long lastCurrentMillis;                    // The last time the run() method was called
-    BatteryLEDsMode mode = BLM_UNKNOWN;                 // The current mode of the LED strip
+    BatteryLevel level = BL_UNKNOWN;                 // The current mode of the LED strip
 
     void updateLEDs();   // Apply the current state to the LED Strip
 };

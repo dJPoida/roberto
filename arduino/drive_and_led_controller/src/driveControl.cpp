@@ -9,6 +9,14 @@
 #include "config.h"
 #include "driveControl.h"
 
+
+/**
+ * Constructor
+ */
+DriveControl::DriveControl(){
+}
+
+
 /**
  * Initialise
  */
@@ -41,13 +49,6 @@ bool DriveControl::init() {
   #endif
 
   return true;  
-}
-
-
-/**
- * Constructor
- */
-DriveControl::DriveControl(){
 }
 
 
@@ -101,8 +102,10 @@ void DriveControl::setSpeed(int val) {
   int newDriveSpeedVal = max(min(val, 10), -10);
   if (newDriveSpeedVal != driveSpeedVal) {
     driveSpeedVal = newDriveSpeedVal;
+    #ifdef SERIAL_DEBUG
     Serial.print("Set Drive Speed: ");
     Serial.println(driveSpeedVal);
+    #endif
 
     // Reset the steering if stopping
     if (driveSpeedVal == 0) {
@@ -119,8 +122,10 @@ void DriveControl::setStrafe(int val) {
   int newStrafeVal = max(min(val, 10), -10);
   if (newStrafeVal != strafeVal) {
     strafeVal = newStrafeVal;
+    #ifdef SERIAL_DEBUG
     Serial.print("Set Strafe: ");
     Serial.println(strafeVal);
+    #endif
   }
 };
 
@@ -132,8 +137,10 @@ void DriveControl::setSteer(int val) {
   int newSteerVal = max(min(val, 10), -10);
   if (newSteerVal != steerVal) {
     steerVal = newSteerVal;
+    #ifdef SERIAL_DEBUG
     Serial.print("Set Steer: ");
     Serial.println(steerVal);
+    #endif
   }
 };
 

@@ -12,11 +12,24 @@
 // Comment out this line to remove USB serial debug from all files
 #define SERIAL_DEBUG
 
+// I2C Comms (Many of these must match on the host)
+#define I2C_ADDRESS 0x8                       // Address to assign to this device
+#define I2C_HEARTBEAT_TIMEOUT 1000            // How long should we go without receiving a heartbeat before we assume disconnection from the host (ms)
+#define I2C_MSG_HEARTBEAT 'H'                 // Leading character to be interpreted as a heartbeat
+#define I2C_MSG_BATTERY_LEVEL_UPDATE 'B'      // Leading character to be interpreted as a battery level update message
+#define I2C_TERMINATOR 0x0D                   // Character to be interpreted as the terminator for a string
+
 // Battery Meter LEDs
 #define PIN_BATTERY_METER_LEDS A3
 #define BATTERY_METER_LEDS_COUNT 3
 #define BATTERY_METER_LEDS_BRIGHTNESS 50 // 0->255
-#define BATTERY_METER_LEDS_FLASH_DURATION 30 // How long each "ON" / "OFF" cycle should last (Note - this is affected by the timer changes and does not represent actual milliseconds)
+#define BATTERY_METER_LEDS_FLASH_DURATION 500 // How long each "ON" / "OFF" cycle should last (Note - this is affected by the timer changes and does not represent actual milliseconds)
+
+// Battery Level Percentages
+#define BATTERY_LEVEL_FULL 80
+#define BATTERY_LEVEL_HIGH 60
+#define BATTERY_LEVEL_MED 30
+#define BATTERY_LEVEL_LOW 10
 
 // Front Left Motor
 #define PIN_MOTOR_FL_PWM 6  // Enable / PWM SPEED control

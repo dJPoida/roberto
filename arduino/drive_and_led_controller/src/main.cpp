@@ -6,10 +6,12 @@
 \*============================================================================*/
 #include <Arduino.h>
 
+#include "main.h"
 #include "config.h"
 #include "helpers.h"
 #include "batteryMeterLEDs.h"
 #include "driveControl.h"
+#include "i2cComms.h"
 
 BatteryMeterLEDs batteryMeterLeds = BatteryMeterLEDs();   // The Battery Meter LED Strip
 DriveControl driveControl = DriveControl();               // The Drive Controller
@@ -25,17 +27,10 @@ void setup() {
 
   batteryMeterLeds.init();
   driveControl.init();
+  initI2CComms(handleHostConnectionChanged);
 
   #ifdef SERIAL_DEBUG  
   Serial.println("Roberto Drive Control Ready.");
-  Serial.println(" W = Forward");
-  Serial.println(" S = Reverse");
-  Serial.println(" A = Steer Left");
-  Serial.println(" D = Steer Right");
-  Serial.println(" Q = Strafe Left");
-  Serial.println(" E = Strafe Right");
-  Serial.println("=======================");
-  Serial.println(" SPACE = EMERGENCY STOP");
   #endif
 }
 
@@ -44,11 +39,36 @@ void setup() {
  */
 void loop() {
   unsigned long currentMillis = millis();
-  // readSerialInput();
-  driveControl.drive();
+  
+  bool connected = checkConnectionToHost(currentMillis);
+  
+  // Only perform some core functions if connected to the host
+  if (connected) {
+    batteryMeterLeds.setLevelFromBatteryPercent(getBatteryLevel());
+    driveControl.drive();
+  }
+
+  // Update the flashing state of the Battery indication LEDs
   batteryMeterLeds.run(currentMillis);
+
+  // Give it some breathing room
+  delay(1);
 }
 
+void handleHostConnectionChanged(bool hostConnected) {
+  // Reset the known state of the battery level
+  if (hostConnected) {
+    batteryMeterLeds.setLevelFromBatteryPercent(getBatteryLevel());
+  } else {
+    batteryMeterLeds.setLevel(BL_UNKNOWN);
+  }
+  
+  #ifdef SERIAL_DEBUG
+  Serial.print("Connection to host");
+  if (!hostConnected) Serial.println(" lost!");
+  if (hostConnected) Serial.println(" restored.");
+  #endif
+}
 
 /**
  * Read the Serial input buffer
