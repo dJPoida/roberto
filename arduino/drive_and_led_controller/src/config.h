@@ -10,7 +10,7 @@
 #include "Arduino.h"
 
 // Comment out this line to remove USB serial debug from all files
-#define SERIAL_DEBUG
+// #define SERIAL_DEBUG
 
 // I2C Comms (Many of these must match on the host)
 #define I2C_ADDRESS 0x8                       // Address to assign to this device
